@@ -49,6 +49,13 @@ class SQS {
   }
 
   _create(functionKey, rawSqsEventDefinition) {
+    // If the queueName is provided, use it. Otherwise, use the function key. See: https://github.com/CoorpAcademy/serverless-plugins/pull/211/
+    const {queueName} = this.options;
+
+    if (queueName) {
+      rawSqsEventDefinition.queueName = queueName;
+    }
+
     const sqsEvent = new SQSEventDefinition(
       rawSqsEventDefinition,
       this.options.region,
